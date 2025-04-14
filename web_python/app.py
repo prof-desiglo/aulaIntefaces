@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from hora import registrar_hora
+from run import list_dir
 
 app = Flask(__name__)
 CORS(app)
@@ -28,3 +29,9 @@ def executa():
     resultado = {'resultado': valor}
     return jsonify(resultado)
 
+
+@app.route('/dir')
+def diretorio():
+    valor = list_dir()
+    resultado = {'resultado': valor}
+    return jsonify(resultado) 
