@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Consulta de API com Tabela</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 80%;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #aaa;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Dados da API</h1>
+  <button onclick="buscarDados()">Buscar</button>
+  <button onclick="atualiza()">Atualiza</button>
+  <div id="tabela-container"></div>
+  <div id="resultado"></div>
+
+  <script>
+    function buscarDados() {
+      fetch('http://127.0.0.1:5000/valores') // retorna uma lista de posts
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Erro na requisição: ' + response.status);
+          }
+          return response.json();
+        })
+        .then(dados => {
+          renderizarTabela(dados);
+        })
+        .catch(erro => {
+          document.getElementById('tabela-container').innerHTML = '<p>Erro: ' + erro.message + '</p>';
+        });
+    }
+
+    function renderizarTabela(dados) {
+      let html = `
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome da máquina</th>
+              <th>IP</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      dados.forEach(post => {
+        html += `
+          <tr>
+            <td>${post.id}</td>
+            <td>${post.Nome_da_maquina}</td>
+            <td>${post.ip}</td>
+          </tr>
+        `;
+      });
+
+      html += '</tbody></table>';
+
+      document.getElementById('tabela-container').innerHTML = html;
+    }
+
+    function atualiza() {
+      fetch('http://127.0.0.1:5000/atualizaArquivo') // retorna uma lista de posts
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Erro na requisição: ' + response.status);
+          }
+          return response.json();
+        })
+        .then(dados => {
+          document.getElementById('resultado').innerHTML = '<p>'+JSON.stringify(dados, null, 2)+'</p>';
+        })
+        .catch(erro => {
+          document.getElementById('resultado').innerHTML = '<p>Erro: ' + erro.message + '</p>';
+        });
+    }
+
+  </script>
+</body>
+</html>

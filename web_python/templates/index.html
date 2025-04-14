@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Consulta de API com Fetch</title>
+</head>
+<body>
+  <h1>Dados da API</h1>
+  <button onclick="buscarDados()">Buscar</button>
+  <pre id="resultado"></pre>
+
+  <script>
+    function buscarDados() {
+      fetch('http://127.0.0.1:5000/valores') // exemplo de API pública
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Erro na requisição: ' + response.status);
+          }
+          return response.json();
+        })
+        .then(dados => {
+          document.getElementById('resultado').textContent = JSON.stringify(dados, null, 2);
+        })
+        .catch(erro => {
+          document.getElementById('resultado').textContent = 'Erro: ' + erro.message;
+        });
+    }
+  </script>
+</body>
+</html>
