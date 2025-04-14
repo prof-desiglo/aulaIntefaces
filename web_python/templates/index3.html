@@ -23,8 +23,10 @@
   <h1>Dados da API</h1>
   <button onclick="buscarDados()">Buscar</button>
   <button onclick="atualiza()">Atualiza</button>
+  <button onclick="ls()">ls</button>
   <div id="tabela-container"></div>
   <div id="resultado"></div>
+  <div id="resultado2"></div>
 
   <script>
     function buscarDados() {
@@ -84,6 +86,23 @@
         })
         .catch(erro => {
           document.getElementById('resultado').innerHTML = '<p>Erro: ' + erro.message + '</p>';
+        });
+    }
+	
+	
+	 function ls() {
+      fetch('http://127.0.0.1:5000/dir') // retorna uma lista de posts
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Erro na requisição: ' + response.status);
+          }
+          return response.json();
+        })
+        .then(dados => {
+          document.getElementById('resultado2').innerHTML = '<p>'+JSON.stringify(dados, null, 2)+'</p>';
+        })
+        .catch(erro => {
+          document.getElementById('tabela-container').innerHTML = '<p>Erro: ' + erro.message + '</p>';
         });
     }
 
